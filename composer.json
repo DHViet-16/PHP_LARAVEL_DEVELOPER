@@ -1,0 +1,15 @@
+{
+    "name": "admin/php-laravel-84-days",
+    "autoload": {
+        "psr-4": {
+            "Admin\\PhpLaravel84Days\\": "day-11/src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "DHViet-16",
+            "email": "hoangvietpk16@gmail.com"
+        }
+    ],
+    "require": {}
+}
