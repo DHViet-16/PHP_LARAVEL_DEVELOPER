@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Middleware;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -38,13 +37,9 @@ class UserController extends Controller
     {
         return view('users.create');
     }
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|min:2|max:100',
-            'email' => 'required|string|email|max:255',
-            'age' => 'required|integer|min:18|max:100',
-        ]);
+        $validated = $request->validated();
         return "Name: {$validated['name']} \n Email: {$validated['email']} \n Age: {$validated['age']}";
     }
 }
