@@ -5,6 +5,7 @@ use App\Http\Controllers\HelloController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckAge;
 use App\Http\Middleware\CheckRegistrationAge;
+use App\Http\Controllers\PostController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,3 +36,6 @@ Route::post('/users', [UserController::class, 'store'])->middleware(CheckRegistr
 Route::get('/adult', function () {
     return 'Welcome to adult area';
 })->middleware(CheckAge::class);
+
+
+Route::post('/posts', [PostController::class, 'store']);
