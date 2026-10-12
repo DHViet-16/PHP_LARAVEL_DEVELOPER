@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\RedirectResponse;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
@@ -20,5 +21,18 @@ class PostController extends Controller
             'success',
             'Post created successfully.'
         );
+    }
+    public function show(int $id): PostResource
+    {
+        $post = Post::findOrFail($id);
+
+        return new PostResource($post);
+    }
+
+    public function index()
+    {
+        $posts = Post::latest()->get();
+
+        return PostResource::collection($posts);
     }
 }
