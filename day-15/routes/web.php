@@ -43,3 +43,4 @@ Route::post('/posts', [PostController::class, 'store']);
 
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::get('/posts', [PostController::class, 'index']);
+Route::post('/api/posts', [PostController::class, 'storeApi']);

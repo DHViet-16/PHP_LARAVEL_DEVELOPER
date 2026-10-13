@@ -37,7 +37,8 @@ class PostResourceTest extends TestCase
                 ],
             ])
             ->assertJsonPath('data.0.title', 'First post')
-            ->assertJsonPath('data.0.is_published', true);
+            ->assertJsonPath('data.0.is_published', true)
+            ->assertJsonMissingPath('data.0.internal_notes');
     }
     public function test_single_post_endpoint_returns_resource(): void
     {
@@ -45,16 +46,16 @@ class PostResourceTest extends TestCase
 
         $post = \App\Models\Post::factory()->create([
             'user_id' => $user->id,
-            'title' => 'Resource Test',
-            'content' => 'Testing a single post',
+            'title' => 'Laravel api',
+            'content' => 'Learning API Resources',
         ]);
 
         $response = $this->getJson('/posts/' . $post->id);
 
         $response->assertOk()
             ->assertJsonPath('data.id', $post->id)
-            ->assertJsonPath('data.title', 'Resource test')
-            ->assertJsonPath('data.content', 'Testing a single post');
+            ->assertJsonPath('data.title', 'Laravel api')
+            ->assertJsonPath('data.content', 'Learning API Resources');
     }
 
     public function test_missing_post_returns_404(): void
@@ -62,5 +63,24 @@ class PostResourceTest extends TestCase
         $response = $this->getJson('/posts/999999');
 
         $response->assertNotFound();
+    }
+
+    public function test_api_can_create_post_and_returns_201(): void
+    {
+        \App\Models\User::factory()->create(['id' => 1]);
+
+        $response = $this->postJson('/api/posts', [
+            'title' => 'Laravel api',
+            'content' => 'Learning API Resources',
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('data.title', 'Laravel api')
+            ->assertJsonPath('data.content', 'Learning API Resources');
+
+        $this->assertDatabaseHas('posts', [
+            'title' => 'Laravel api',
+            'content' => 'Learning API Resources',
+        ]);
     }
 }

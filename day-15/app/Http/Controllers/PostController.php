@@ -35,4 +35,11 @@ class PostController extends Controller
 
         return PostResource::collection($posts);
     }
+    public function storeApi(StorePostRequest $request)
+    {
+        $validated = $request->validated();
+        $validated['user_id'] = 1;
+        $post = Post::create($validated);
+        return (new PostResource($post))->response()->setStatusCode(201);
+    }
 }

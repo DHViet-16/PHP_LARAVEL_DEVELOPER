@@ -40,4 +40,20 @@ class PostValidationTest extends TestCase
             'user_id' => 1,
         ]);
     }
+
+    public function test_api_returns_422_when_title_is_missing(): void
+    {
+        $response = $this->postJson('/posts', [
+            'content' => 'Learning Laravel API',
+        ]);
+
+        $response->assertUnprocessable()
+            ->assertJsonStructure([
+                'message',
+                'errors' => [
+                    'title'
+                ]
+            ])
+            ->assertJsonValidationErrors(['title']);
+    }
 }
